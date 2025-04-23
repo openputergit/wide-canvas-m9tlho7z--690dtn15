@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLG Gaming</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #1a1c24 0%, #2a2d3a 100%);
+            color: #e0e0e0;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .neon-text {
+            text-shadow: 0 0 10px #00ff8c, 0 0 20px #00ff8c, 0 0 30px #00ff8c;
+            color: #00ff8c;
+        }
+        .neon-border {
+            box-shadow: 0 0 5px #00ff8c, 0 0 10px #00ff8c;
+            border: 1px solid #00ff8c;
+        }
+        .loader {
+            border-top-color: #00ff8c;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-hover:hover {
+            background: rgba(0, 255, 140, 0.2);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .game-bg {
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 140, 0.2);
+            transition: all 0.3s ease;
+        }
+        .message-bubble {
+            max-width: 80%;
+            word-break: break-word;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .hamburger-menu {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .hamburger-menu {
+                display: block;
+            }
+            .mobile-menu {
+                position: fixed;
+                top: 60px;
+                right: 0;
+                width: 100%;
+                background: rgba(26, 28, 36, 0.95);
+                backdrop-filter: blur(10px);
+                z-index: 40;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="game-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 px-4 py-2">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold neon-text">TLG GAMING</h1>
+            
+            <!-- Desktop Menu -->
+            <div class="desktop-menu space-x-4">
+                <button onclick="showSection('tournaments')" class="px-4 py-2 rounded glass btn-hover">Tournaments</button>
+                <button onclick="showSection('registration')" class="px-4 py-2 rounded glass btn-hover">Register</button>
+                <button onclick="showSection('chat')" class="px-4 py-2 rounded glass btn-hover">Chat</button>
+                <button onclick="showSection('complaints')" class="px-4 py-2 rounded glass btn-hover">Complaints</button>
+                <button onclick="showSection('support')" class="px-4 py-2 rounded glass btn-hover">Support</button>
+                <button onclick="showLoginModal()" class="px-4 py-2 rounded glass btn-hover">Admin</button>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <div class="hamburger-menu">
+                <button onclick="toggleMobileMenu()" class="p-2 rounded glass">
+                    <i class="bi bi-list text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu hidden">
+            <div class="flex flex-col p-4 space-y-2">
+                <button onclick="showSection('tournaments'); toggleMobileMenu();" class="px-4 py-2 rounded glass btn-hover text-left">Tournaments</button>
+                <button onclick="showSection('registration'); toggleMobileMenu();" class="px-4 py-2 rounded glass btn-hover text-left">Register</button>
+                <button onclick="showSection('chat'); toggleMobileMenu();" class="px-4 py-2 rounded glass btn-hover text-left">Chat</button>
+                <button onclick="showSection('complaints'); toggleMobileMenu();" class="px-4 py-2 rounded glass btn-hover text-left">Complaints</button>
+                <button onclick="showSection('support'); toggleMobileMenu();" class="px-4 py-2 rounded glass btn-hover text-left">Support</button>
+                <button onclick="showLoginModal(); toggleMobileMenu();" class="px-4 py-2 rounded glass btn-hover text-left">Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto pt-24 px-4 pb-12">
+        <!-- Tournaments Section -->
+        <section id="tournaments" class="space-y-6">
+            <h2 class="text-3xl font-bold mb-8 text-center neon-text">FREE FIRE TOURNAMENTS</h2>
+            <div class="mb-6 text-center">
+                <p class="text-lg mb-4">Join our exciting Free Fire tournaments and compete for amazing prizes!</p>
+                <button onclick="showSection('registration')" class="px-6 py-3 rounded glass neon-border btn-hover text-lg font-bold">
+                    <i class="bi bi-trophy mr-2"></i> Register Now
+                </button>
+            </div>
+            <div id="tournamentsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tournaments will be loaded here -->
+                <div class="glass p-6 rounded-lg transition-all duration-300 card-hover">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1599409643218-757acbd452e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Free Fire Squad Championship" class="w-full h-48 object-cover rounded mb-4">
+                        <span class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-sm font-bold">SQUAD</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Free Fire Squad Championship</h3>
+                    <div class="space-y-2 mb-4">
+                        <p class="flex items-center"><i class="bi bi-calendar-event mr-2"></i>Date: Jan 25, 2024</p>
+                        <p class="flex items-center"><i class="bi bi-clock mr-2"></i>Time: 8:00 PM IST</p>
+                        <p class="flex items-center"><i class="bi bi-cash-stack mr-2"></i>Prize Pool: ₹5,000</p>
+                        <p class="flex items-center"><i class="bi bi-people mr-2"></i>Mode: Squad (4 players)</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="showTournamentDetails(1)" class="flex-1 px-3 py-2 rounded glass btn-hover text-sm">Details</button>
+                        <button onclick="showSection('registration')" class="flex-1 px-3 py-2 rounded glass neon-border btn-hover text-sm font-bold">Register</button>
+                    </div>
+                </div>
+                
+                <div class="glass p-6 rounded-lg transition-all duration-300 card-hover">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Free Fire Duo Challenge" class="w-full h-48 object-cover rounded mb-4">
+                        <span class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-sm font-bold">DUO</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Free Fire Duo Challenge</h3>
+                    <div class="space-y-2 mb-4">
+                        <p class="flex items-center"><i class="bi bi-calendar-event mr-2"></i>Date: Feb 5, 2024</p>
+                        <p class="flex items-center"><i class="bi bi-clock mr-2"></i>Time: 9:00 PM IST</p>
+                        <p class="flex items-center"><i class="bi bi-cash-stack mr-2"></i>Prize Pool: ₹3,000</p>
+                        <p class="flex items-center"><i class="bi bi-people mr-2"></i>Mode: Duo (2 players)</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="showTournamentDetails(2)" class="flex-1 px-3 py-2 rounded glass btn-hover text-sm">Details</button>
+                        <button onclick="showSection('registration')" class="flex-1 px-3 py-2 rounded glass neon-border btn-hover text-sm font-bold">Register</button>
+                    </div>
+                </div>
+                
+                <div class="glass p-6 rounded-lg transition-all duration-300 card-hover">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1611996575749-79a3a250f948?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Free Fire Solo Cup" class="w-full h-48 object-cover rounded mb-4">
+                        <span class="absolute top-2 right-2 bg-yellow-600 text-white px-2 py-1 rounded text-sm font-bold">SOLO</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Free Fire Solo Cup</h3>
+                    <div class="space-y-2 mb-4">
+                        <p class="flex items-center"><i class="bi bi-calendar-event mr-2"></i>Date: Feb 15, 2024</p>
+                        <p class="flex items-center"><i class="bi bi-clock mr-2"></i>Time: 7:00 PM IST</p>
+                        <p class="flex items-center"><i class="bi bi-cash-stack mr-2"></i>Prize Pool: ₹2,000</p>
+                        <p class="flex items-center"><i class="bi bi-person mr-2"></i>Mode: Solo</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="showTournamentDetails(3)" class="flex-1 px-3 py-2 rounded glass btn-hover text-sm">Details</button>
+                        <button onclick="showSection('registration')" class="flex-1 px-3 py-2 rounded glass neon-border btn-hover text-sm font-bold">Register</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Section -->
+        <section id="registration" class="hidden">
+            <h2 class="text-3xl font-bold mb-8 text-center neon-text">TEAM REGISTRATION</h2>
+            <div class="glass p-6 rounded-lg max-w-2xl mx-auto">
+                <form id="registrationForm" class="space-y-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block mb-2 font-bold">Tournament</label>
+                            <select required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                                <option value="" disabled selected>Select a tournament</option>
+                                <option value="1">Free Fire Squad Championship</option>
+                                <option value="2">Free Fire Duo Challenge</option>
+                                <option value="3">Free Fire Solo Cup</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-bold">Team Name</label>
+                            <input type="text" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="Enter your team name">
+                        </div>
+                    </div>
+                    
+                    <div id="playersContainer" class="space-y-4">
+                        <div class="player-entry glass p-4 rounded">
+                            <label class="block mb-2 font-bold">Player 1 (Captain)</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input type="text" placeholder="Name" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                                <input type="text" placeholder="Free Fire UID" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                            </div>
+                            <input type="tel" placeholder="Phone Number" required class="w-full p-3 rounded bg-gray-800 border border-gray-700 mt-4">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <button type="button" onclick="addPlayer()" class="px-4 py-2 rounded glass btn-hover">
+                            <i class="bi bi-person-plus mr-2"></i> Add Player
+                        </button>
+                    </div>
+                    
+                    <div class="glass p-4 rounded space-y-4">
+                        <h3 class="font-bold text-lg">Payment Details</h3>
+                        <div class="bg-gray-800 p-4 rounded flex items-center justify-between">
+                            <div>
+                                <p class="text-sm">UPI ID:</p>
+                                <p class="font-bold text-lg neon-text">tlggamers@axl</p>
+                            </div>
+                            <button type="button" onclick="copyUpiId()" class="px-3 py-2 rounded glass btn-hover">
+                                <i class="bi bi-clipboard"></i> Copy
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-bold">Upload Payment Screenshot</label>
+                            <div class="relative">
+                                <input type="file" id="paymentScreenshot" accept="image/*" required class="hidden">
+                                <label for="paymentScreenshot" class="w-full p-3 rounded bg-gray-800 border border-gray-700 flex items-center justify-center cursor-pointer">
+                                    <i class="bi bi-cloud-upload mr-2"></i> Choose Screenshot
+                                </label>
+                                <div id="filePreview" class="mt-2 hidden">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-green-400"><i class="bi bi-check-circle-fill"></i></span>
+                                        <span id="fileName">File selected</span>
+                                        <button type="button" onclick="removeFile()" class="text-red-400">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass p-4 rounded space-y-2">
+                        <div class="flex items-start">
+                            <input type="checkbox" required id="terms" class="mt-1 mr-2">
+                            <label for="terms" class="text-sm">I agree to the tournament rules and confirm that all player details are correct.</label>
+                        </div>
+                        <button type="submit" class="w-full px-4 py-3 rounded glass neon-border btn-hover neon-text text-lg font-bold">
+                            Submit Registration
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="hidden">
+            <h2 class="text-3xl font-bold mb-8 text-center neon-text">COMMUNITY CHAT</h2>
+            <div class="glass p-4 rounded-lg max-w-4xl mx-auto h-[600px] flex flex-col">
+                <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 space-y-3 p-2 scroll-hide">
+                    <!-- Messages will be loaded here -->
+                    <div class="flex items-start space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                            <span class="font-bold text-xs">AS</span>
+                        </div>
+                        <div class="message-bubble glass p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-blue-400">Aryan Singh</span>
+                                <span class="text-xs text-gray-400">10:23 AM</span>
+                            </div>
+                            <p>When do registrations close for the Squad Championship?</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center">
+                            <span class="font-bold text-xs">TLG</span>
+                        </div>
+                        <div class="message-bubble glass p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-red-400">TLG Admin</span>
+                                <span class="text-xs text-gray-400">10:25 AM</span>
+                            </div>
+                            <p>Registrations close 24 hours before the tournament starts. So for the Squad Championship, it will be Jan 24th, 8 PM IST.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                            <span class="font-bold text-xs">RK</span>
+                        </div>
+                        <div class="message-bubble glass p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-purple-400">Rahul Kumar</span>
+                                <span class="text-xs text-gray-400">10:30 AM</span>
+                            </div>
+                            <p>What's the registration fee for the Duo Challenge?</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center">
+                            <span class="font-bold text-xs">TLG</span>
+                        </div>
+                        <div class="message-bubble glass p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-red-400">TLG Admin</span>
+                                <span class="text-xs text-gray-400">10:32 AM</span>
+                            </div>
+                            <p>The registration fee for Duo Challenge is ₹200 per team. For Solo Cup it's ₹100 and Squad Championship is ₹400.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass p-2 rounded">
+                    <form id="chatForm" class="flex gap-2">
+                        <input type="text" placeholder="Type your message..." class="flex-1 p-3 rounded bg-gray-800 border border-gray-700">
+                        <button type="submit" class="px-6 py-3 rounded glass btn-hover">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complaints Section -->
+        <section id="complaints" class="hidden">
+            <h2 class="text-3xl font-bold mb-8 text-center neon-text">FILE A COMPLAINT</h2>
+            <div class="glass p-6 rounded-lg max-w-2xl mx-auto">
+                <form id="complaintForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-2 font-bold">Full Name</label>
+                            <input type="text" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-bold">Email Address</label>
+                            <input type="email" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="Your email">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 font-bold">Issue Type</label>
+                        <select required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                            <option value="" disabled selected>Select issue type</option>
+                            <option value="payment">Payment Issues</option>
+                            <option value="technical">Technical Problems</option>
+                            <option value="cheating">Report Cheating</option>
+                            <option value="other">Other Issues</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 font-bold">Complaint Details</label>
+                        <textarea rows="5" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="Describe your issue in detail"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 font-bold">Screenshots (optional)</label>
+                        <input type="file" accept="image/*" class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                    </div>
+                    
+                    <button type="submit" class="w-full px-4 py-3 rounded glass btn-hover">
+                        Submit Complaint
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support" class="hidden">
+            <h2 class="text-3xl font-bold mb-8 text-center neon-text">SUPPORT</h2>
+            <div class="glass p-6 rounded-lg max-w-4xl mx-auto">
+                <div class="aspect-w-16 aspect-h-9 mb-6">
+                    <iframe src="https://www.youtube.com/embed/videoseries?list=UU@tlggaming426" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-[400px] rounded"></iframe>
+                </div>
+                
+                <div class="text-center space-y-4">
+                    <h3 class="text-xl font-bold">TLG Gaming Official Channel</h3>
+                    <p>Subscribe to our channel for tournament updates, gameplay tips, and highlights!</p>
+                    
+                    <div class="flex justify-center space-x-4">
+                        <a href="https://youtube.com/@tlggaming426?si=cZoU7kr50fVHXYqJ" target="_blank" class="px-6 py-3 rounded glass btn-hover flex items-center">
+                            <i class="bi bi-youtube text-red-500 mr-2 text-xl"></i> Subscribe
+                        </a>
+                        <a href="https://youtube.com/@tlggaming426?si=cZoU7kr50fVHXYqJ" target="_blank" class="px-6 py-3 rounded glass btn-hover">
+                            Visit Channel
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass p-4 rounded-lg">
+                        <h4 class="font-bold mb-2 flex items-center">
+                            <i class="bi bi-question-circle mr-2"></i> Frequently Asked Questions
+                        </h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• How do I register for tournaments?</li>
+                            <li>• What payment methods are accepted?</li>
+                            <li>• How will I know if my registration is successful?</li>
+                            <li>• How do I join the tournament lobby?</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass p-4 rounded-lg">
+                        <h4 class="font-bold mb-2 flex items-center">
+                            <i class="bi bi-headset mr-2"></i> Contact Support
+                        </h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center"><i class="bi bi-envelope-fill mr-2"></i> Email: support@tlggaming.com</li>
+                            <li class="flex items-center"><i class="bi bi-discord mr-2"></i> Discord: discord.gg/tlggaming</li>
+                            <li class="flex items-center"><i class="bi bi-whatsapp mr-2"></i> WhatsApp: +91 9876543210</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Admin Dashboard Section -->
+        <section id="adminDashboard" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold neon-text">ADMIN DASHBOARD</h2>
+                <div>
+                    <span class="text-sm mr-2">Logged in as TLG Admin</span>
+                    <button onclick="logout()" class="px-4 py-2 rounded glass btn-hover">
+                        <i class="bi bi-box-arrow-right mr-1"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Admin Navigation Tabs -->
+            <div class="glass p-2 rounded-lg mb-6">
+                <div class="flex flex-wrap">
+                    <button onclick="showAdminTab('manageTournaments')" id="manageTournamentsTab" class="admin-tab flex-1 px-4 py-3 text-center font-bold rounded btn-hover">
+                        <i class="bi bi-trophy mr-2"></i> Tournaments
+                    </button>
+                    <button onclick="showAdminTab('registrations')" id="registrationsTab" class="admin-tab flex-1 px-4 py-3 text-center font-bold rounded">
+                        <i class="bi bi-people mr-2"></i> Registrations
+                    </button>
+                    <button onclick="showAdminTab('payments')" id="paymentsTab" class="admin-tab flex-1 px-4 py-3 text-center font-bold rounded">
+                        <i class="bi bi-cash-stack mr-2"></i> Payments
+                    </button>
+                    <button onclick="showAdminTab('adminComplaints')" id="adminComplaintsTab" class="admin-tab flex-1 px-4 py-3 text-center font-bold rounded">
+                        <i class="bi bi-exclamation-triangle mr-2"></i> Complaints
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Manage Tournaments Tab -->
+            <div id="manageTournaments" class="admin-content">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Manage Tournaments</h3>
+                    <button onclick="showTournamentForm()" class="px-4 py-2 rounded glass btn-hover">
+                        <i class="bi bi-plus-lg mr-1"></i> Add Tournament
+                    </button>
+                </div>
+                
+                <div class="glass p-4 rounded-lg overflow-auto mb-6">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="py-2 px-4 text-left">ID</th>
+                                <th class="py-2 px-4 text-left">Title</th>
+                                <th class="py-2 px-4 text-left">Date</th>
+                                <th class="py-2 px-4 text-left">Mode</th>
+                                <th class="py-2 px-4 text-left">Prize</th>
+                                <th class="py-2 px-4 text-left">Status</th>
+                                <th class="py-2 px-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">1</td>
+                                <td class="py-2 px-4">Free Fire Squad Championship</td>
+                                <td class="py-2 px-4">Jan 25, 2024</td>
+                                <td class="py-2 px-4">Squad</td>
+                                <td class="py-2 px-4">₹5,000</td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-green-600 bg-opacity-30 text-green-400 rounded-full text-xs">Active</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="editTournament(1)" class="text-blue-400 mr-2"><i class="bi bi-pencil-square"></i></button>
+                                    <button onclick="deleteTournament(1)" class="text-red-400"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">2</td>
+                                <td class="py-2 px-4">Free Fire Duo Challenge</td>
+                                <td class="py-2 px-4">Feb 5, 2024</td>
+                                <td class="py-2 px-4">Duo</td>
+                                <td class="py-2 px-4">₹3,000</td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-green-600 bg-opacity-30 text-green-400 rounded-full text-xs">Active</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="editTournament(2)" class="text-blue-400 mr-2"><i class="bi bi-pencil-square"></i></button>
+                                    <button onclick="deleteTournament(2)" class="text-red-400"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4">3</td>
+                                <td class="py-2 px-4">Free Fire Solo Cup</td>
+                                <td class="py-2 px-4">Feb 15, 2024</td>
+                                <td class="py-2 px-4">Solo</td>
+                                <td class="py-2 px-4">₹2,000</td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-green-600 bg-opacity-30 text-green-400 rounded-full text-xs">Active</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="editTournament(3)" class="text-blue-400 mr-2"><i class="bi bi-pencil-square"></i></button>
+                                    <button onclick="deleteTournament(3)" class="text-red-400"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Tournament Form (hidden by default) -->
+                <div id="tournamentForm" class="glass p-6 rounded-lg hidden">
+                    <h3 class="text-xl font-bold mb-4">Add/Edit Tournament</h3>
+                    <form id="addTournamentForm" class="space-y-4">
+                        <input type="hidden" id="tournamentId">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-2 font-bold">Tournament Title</label>
+                                <input type="text" id="tournamentTitle" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="e.g. Free Fire Squad Championship">
+                            </div>
+                            <div>
+                                <label class="block mb-2 font-bold">Game Mode</label>
+                                <select id="tournamentMode" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                                    <option value="Squad">Squad (4 players)</option>
+                                    <option value="Duo">Duo (2 players)</option>
+                                    <option value="Solo">Solo</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-2 font-bold">Date</label>
+                                <input type="date" id="tournamentDate" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                            </div>
+                            <div>
+                                <label class="block mb-2 font-bold">Time</label>
+                                <input type="time" id="tournamentTime" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-2 font-bold">Prize Pool (₹)</label>
+                                <input type="number" id="tournamentPrize" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="e.g. 5000">
+                            </div>
+                            <div>
+                                <label class="block mb-2 font-bold">Entry Fee (₹)</label>
+                                <input type="number" id="tournamentFee" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="e.g. 400">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-bold">Tournament Rules</label>
+                            <textarea id="tournamentRules" rows="4" required class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="Enter rules, one per line"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-bold">Tournament Image</label>
+                            <input type="file" id="tournamentImage" accept="image/*" class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                        </div>
+                        
+                        <div class="flex space-x-4 justify-end">
+                            <button type="button" onclick="hideTournamentForm()" class="px-4 py-2 rounded glass btn-hover">Cancel</button>
+                            <button type="submit" class="px-4 py-2 rounded glass neon-border btn-hover">Save Tournament</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Registrations Tab -->
+            <div id="registrations" class="admin-content hidden">
+                <h3 class="text-xl font-bold mb-4">Team Registrations</h3>
+                <div class="glass p-4 rounded-lg overflow-auto">
+                    <div class="mb-4 flex justify-end">
+                        <select class="p-2 rounded bg-gray-800 border border-gray-700">
+                            <option value="all">All Tournaments</option>
+                            <option value="1">Squad Championship</option>
+                            <option value="2">Duo Challenge</option>
+                            <option value="3">Solo Cup</option>
+                        </select>
+                    </div>
+                    
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="py-2 px-4 text-left">ID</th>
+                                <th class="py-2 px-4 text-left">Team Name</th>
+                                <th class="py-2 px-4 text-left">Tournament</th>
+                                <th class="py-2 px-4 text-left">Captain</th>
+                                <th class="py-2 px-4 text-left">Players</th>
+                                <th class="py-2 px-4 text-left">Payment</th>
+                                <th class="py-2 px-4 text-left">Status</th>
+                                <th class="py-2 px-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">1</td>
+                                <td class="py-2 px-4">Phoenix Squad</td>
+                                <td class="py-2 px-4">Squad Championship</td>
+                                <td class="py-2 px-4">Aryan Singh</td>
+                                <td class="py-2 px-4">4</td>
+                                <td class="py-2 px-4"><button onclick="viewPayment(1)" class="text-blue-400"><i class="bi bi-eye"></i> View</button></td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-yellow-600 bg-opacity-30 text-yellow-400 rounded-full text-xs">Pending</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="viewTeamDetails(1)" class="text-blue-400 mr-2"><i class="bi bi-info-circle"></i></button>
+                                    <button onclick="approveTeam(1)" class="text-green-400 mr-2"><i class="bi bi-check-circle"></i></button>
+                                    <button onclick="rejectTeam(1)" class="text-red-400"><i class="bi bi-x-circle"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">2</td>
+                                <td class="py-2 px-4">Inferno Duo</td>
+                                <td class="py-2 px-4">Duo Challenge</td>
+                                <td class="py-2 px-4">Rahul Kumar</td>
+                                <td class="py-2 px-4">2</td>
+                                <td class="py-2 px-4"><button onclick="viewPayment(2)" class="text-blue-400"><i class="bi bi-eye"></i> View</button></td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-green-600 bg-opacity-30 text-green-400 rounded-full text-xs">Approved</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="viewTeamDetails(2)" class="text-blue-400 mr-2"><i class="bi bi-info-circle"></i></button>
+                                    <button onclick="approveTeam(2)" disabled class="text-gray-500 mr-2"><i class="bi bi-check-circle"></i></button>
+                                    <button onclick="rejectTeam(2)" class="text-red-400"><i class="bi bi-x-circle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Payments Tab -->
+            <div id="payments" class="admin-content hidden">
+                <h3 class="text-xl font-bold mb-4">Payment Verifications</h3>
+                <div class="glass p-4 rounded-lg overflow-auto">
+                    <div class="mb-4 flex justify-between">
+                        <div>
+                            <select class="p-2 rounded bg-gray-800 border border-gray-700">
+                                <option value="all">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="verified">Verified</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <input type="text" placeholder="Search by team or player..." class="p-2 rounded bg-gray-800 border border-gray-700">
+                    </div>
+                    
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="py-2 px-4 text-left">ID</th>
+                                <th class="py-2 px-4 text-left">Team</th>
+                                <th class="py-2 px-4 text-left">Tournament</th>
+                                <th class="py-2 px-4 text-left">Amount</th>
+                                <th class="py-2 px-4 text-left">Date</th>
+                                <th class="py-2 px-4 text-left">Screenshot</th>
+                                <th class="py-2 px-4 text-left">Status</th>
+                                <th class="py-2 px-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">1</td>
+                                <td class="py-2 px-4">Phoenix Squad</td>
+                                <td class="py-2 px-4">Squad Championship</td>
+                                <td class="py-2 px-4">₹400</td>
+                                <td class="py-2 px-4">Jan 20, 2024</td>
+                                <td class="py-2 px-4"><button onclick="viewPaymentScreenshot(1)" class="text-blue-400"><i class="bi bi-image"></i> View</button></td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-yellow-600 bg-opacity-30 text-yellow-400 rounded-full text-xs">Pending</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="verifyPayment(1)" class="text-green-400 mr-2"><i class="bi bi-check-lg"></i></button>
+                                    <button onclick="rejectPayment(1)" class="text-red-400"><i class="bi bi-x-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">2</td>
+                                <td class="py-2 px-4">Inferno Duo</td>
+                                <td class="py-2 px-4">Duo Challenge</td>
+                                <td class="py-2 px-4">₹200</td>
+                                <td class="py-2 px-4">Jan 22, 2024</td>
+                                <td class="py-2 px-4"><button onclick="viewPaymentScreenshot(2)" class="text-blue-400"><i class="bi bi-image"></i> View</button></td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-green-600 bg-opacity-30 text-green-400 rounded-full text-xs">Verified</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="verifyPayment(2)" disabled class="text-gray-500 mr-2"><i class="bi bi-check-lg"></i></button>
+                                    <button onclick="rejectPayment(2)" class="text-red-400"><i class="bi bi-x-lg"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Complaints Tab -->
+            <div id="adminComplaints" class="admin-content hidden">
+                <h3 class="text-xl font-bold mb-4">Complaints Management</h3>
+                <div class="glass p-4 rounded-lg overflow-auto">
+                    <div class="mb-4 flex justify-between">
+                        <div>
+                            <select class="p-2 rounded bg-gray-800 border border-gray-700">
+                                <option value="all">All Types</option>
+                                <option value="payment">Payment Issues</option>
+                                <option value="technical">Technical Problems</option>
+                                <option value="cheating">Report Cheating</option>
+                                <option value="other">Other Issues</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select class="p-2 rounded bg-gray-800 border border-gray-700">
+                                <option value="all">All Statuses</option>
+                                <option value="open">Open</option>
+                                <option value="inprogress">In Progress</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="py-2 px-4 text-left">ID</th>
+                                <th class="py-2 px-4 text-left">User</th>
+                                <th class="py-2 px-4 text-left">Type</th>
+                                <th class="py-2 px-4 text-left">Subject</th>
+                                <th class="py-2 px-4 text-left">Date</th>
+                                <th class="py-2 px-4 text-left">Status</th>
+                                <th class="py-2 px-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">1</td>
+                                <td class="py-2 px-4">Aryan Singh</td>
+                                <td class="py-2 px-4">Payment Issues</td>
+                                <td class="py-2 px-4">Payment made but not verified</td>
+                                <td class="py-2 px-4">Jan 21, 2024</td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-red-600 bg-opacity-30 text-red-400 rounded-full text-xs">Open</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="viewComplaint(1)" class="text-blue-400 mr-2"><i class="bi bi-eye"></i></button>
+                                    <button onclick="resolveComplaint(1)" class="text-green-400"><i class="bi bi-check-circle"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4">2</td>
+                                <td class="py-2 px-4">Rahul Kumar</td>
+                                <td class="py-2 px-4">Report Cheating</td>
+                                <td class="py-2 px-4">Suspected hacker in tournament</td>
+                                <td class="py-2 px-4">Jan 23, 2024</td>
+                                <td class="py-2 px-4"><span class="px-2 py-1 bg-purple-600 bg-opacity-30 text-purple-400 rounded-full text-xs">In Progress</span></td>
+                                <td class="py-2 px-4">
+                                    <button onclick="viewComplaint(2)" class="text-blue-400 mr-2"><i class="bi bi-eye"></i></button>
+                                    <button onclick="resolveComplaint(2)" class="text-green-400"><i class="bi bi-check-circle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Tournament Details Modal -->
+        <div id="tournamentDetailsModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 p-4">
+            <div class="glass p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 id="modalTournamentTitle" class="text-2xl font-bold neon-text">Tournament Details</h2>
+                    <button onclick="hideTournamentDetails()" class="text-2xl">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                
+                <div id="modalTournamentContent">
+                    <!-- Tournament details will be loaded here -->
+                </div>
+                
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button onclick="hideTournamentDetails()" class="px-4 py-2 rounded glass btn-hover">Close</button>
+                    <button onclick="showSection('registration'); hideTournamentDetails();" class="px-4 py-2 rounded glass neon-border btn-hover">Register Now</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Team Details Modal -->
+        <div id="teamDetailsModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 p-4">
+            <div class="glass p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 id="modalTeamTitle" class="text-2xl font-bold neon-text">Team Details</h2>
+                    <button onclick="hideTeamDetailsModal()" class="text-2xl">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                
+                <div id="modalTeamContent" class="space-y-4">
+                    <!-- Team details will be loaded here -->
+                </div>
+                
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button onclick="hideTeamDetailsModal()" class="px-4 py-2 rounded glass btn-hover">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Screenshot Modal -->
+        <div id="paymentScreenshotModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 p-4">
+            <div class="glass p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold neon-text">Payment Screenshot</h2>
+                    <button onclick="hidePaymentScreenshotModal()" class="text-2xl">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                
+                <img id="paymentScreenshotImage" src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80" class="w-full rounded mb-4">
+                
+                <div class="space-y-2 mb-4">
+                    <p><strong>Team:</strong> <span id="paymentTeamName">Phoenix Squad</span></p>
+                    <p><strong>Tournament:</strong> <span id="paymentTournamentName">Squad Championship</span></p>
+                    <p><strong>Amount:</strong> <span id="paymentAmount">₹400</span></p>
+                    <p><strong>Date:</strong> <span id="paymentDate">Jan 20, 2024</span></p>
+                </div>
+                
+                <div class="flex justify-end space-x-4">
+                    <button onclick="hidePaymentScreenshotModal()" class="px-4 py-2 rounded glass btn-hover">Close</button>
+                    <button onclick="verifyPayment(1); hidePaymentScreenshotModal();" class="px-4 py-2 rounded glass btn-hover bg-green-700">
+                        <i class="bi bi-check-lg mr-1"></i> Verify Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Complaint Modal -->
+        <div id="complaintModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 p-4">
+            <div class="glass p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold neon-text">Complaint Details</h2>
+                    <button onclick="hideComplaintModal()" class="text-2xl">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                
+                <div id="complaintContent" class="space-y-4">
+                    <!-- Complaint details will be loaded here -->
+                </div>
+                
+                <div class="mt-4 glass p-4 rounded-lg">
+                    <h3 class="font-bold mb-2">Reply to Complaint</h3>
+                    <textarea rows="3" class="w-full p-3 rounded bg-gray-800 border border-gray-700" placeholder="Write your response..."></textarea>
+                </div>
+                
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button onclick="changeComplaintStatus('inprogress'); hideComplaintModal();" class="px-4 py-2 rounded glass btn-hover">
+                        Mark as In Progress
+                    </button>
+                    <button onclick="changeComplaintStatus('resolved'); hideComplaintModal();" class="px-4 py-2 rounded glass btn-hover bg-green-700">
+                        <i class="bi bi-check-lg mr-1"></i> Mark as Resolved
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50">
+        <div class="glass p-6 rounded-lg w-96 max-w-[90%]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold neon-text">Admin Login</h2>
+                <button onclick="hideLoginModal()" class="text-xl">
+                    <i class="bi bi-x-circle"></i>
+                </button>
+            </div>
+            
+            <form id="adminLoginForm" class="space-y-4">
+                <div>
+                    <label class="block mb-2 font-bold">Username</label>
+                    <input type="text" id="adminUsername" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                </div>
+                <div>
+                    <label class="block mb-2 font-bold">Password</label>
+                    <input type="password" id="adminPassword" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                </div>
+                <div id="loginError" class="text-red-500 hidden">
+                    Invalid username or password.
+                </div>
+                <button type="submit" class="w-full px-4 py-3 rounded glass neon-border btn-hover">
+                    <i class="bi bi-door-open mr-2"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50">
+        <div class="glass p-6 rounded-lg w-96 max-w-[90%] text-center">
+            <div class="text-5xl text-green-500 mb-4">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-4" id="successTitle">Success!</h2>
+            <p id="successMessage" class="mb-6">Your action was completed successfully.</p>
+            <button onclick="hideSuccessModal()" class="w-full px-4 py-3 rounded glass neon-border btn-hover">
+                OK
+            </button>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50">
+        <div class="glass p-6 rounded-lg w-96 max-w-[90%] text-center">
+            <div class="text-5xl text-red-500 mb-4">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-4">Confirm Deletion</h2>
+            <p class="mb-6">Are you sure you want to delete this item? This action cannot be undone.</p>
+            <div class="flex space-x-4">
+                <button onclick="hideDeleteConfirmModal()" class="flex-1 px-4 py-3 rounded glass btn-hover">
+                    Cancel
+                </button>
+                <button onclick="confirmDelete()" class="flex-1 px-4 py-3 rounded glass btn-hover bg-red-700 text-white">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('main section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Admin Login Modal
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function hideLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        // Success Modal
+        function showSuccessModal(title, message) {
+            document.getElementById('successTitle').textContent = title;
+            document.getElementById('successMessage').textContent = message;
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function hideSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+        
+        // Delete Confirmation Modal
+        let deleteItemId = null;
+        let deleteItemType = null;
+        
+        function showDeleteConfirmModal(id, type) {
+            deleteItemId = id;
+            deleteItemType = type;
+            document.getElementById('deleteConfirmModal').classList.remove('hidden');
+        }
+        
+        function hideDeleteConfirmModal() {
+            document.getElementById('deleteConfirmModal').classList.add('hidden');
+        }
+        
+        function confirmDelete() {
+            // Handle different deletion types
+            if (deleteItemType === 'tournament') {
+                // Simulate deletion
+                showSuccessModal("Tournament Deleted", "The tournament has been successfully deleted.");
+            }
+            
+            hideDeleteConfirmModal();
+        }
+
+        // Tournament Details Modal
+        function showTournamentDetails(tournamentId) {
+            const modal = document.getElementById('tournamentDetailsModal');
+            const modalTitle = document.getElementById('modalTournamentTitle');
+            const modalContent = document.getElementById('modalTournamentContent');
+            
+            let tournamentData = {};
+            
+            // Get tournament data based on ID
+            if (tournamentId === 1) {
+                tournamentData = {
+                    title: "Free Fire Squad Championship",
+                    image: "https://images.unsplash.com/photo-1599409643218-757acbd452e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    date: "Jan 25, 2024",
+                    time: "8:00 PM IST",
+                    prize: "₹5,000",
+                    mode: "Squad (4 players)",
+                    fee: "₹400 per team",
+                    rules: [
+                        "Teams must have exactly 4 players",
+                        "All players must be at least Bronze III rank",
+                        "Players must use the tournament room code provided 15 minutes before match",
+                        "No emulators allowed, only mobile devices",
+                        "Top 3 teams will receive prizes",
+                        "Tournament will be streamed live on our YouTube channel"
+                    ],
+                    prizes: [
+                        "1st Place: ₹3,000",
+                        "2nd Place: ₹1,500",
+                        "3rd Place: ₹500"
+                    ]
+                };
+            } else if (tournamentId === 2) {
+                tournamentData = {
+                    title: "Free Fire Duo Challenge",
+                    image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    date: "Feb 5, 2024",
+                    time: "9:00 PM IST",
+                    prize: "₹3,000",
+                    mode: "Duo (2 players)",
+                    fee: "₹200 per team",
+                    rules: [
+                        "Teams must have exactly 2 players",
+                        "All players must be at least Silver II rank",
+                        "Players must use the tournament room code provided 15 minutes before match",
+                        "No emulators allowed, only mobile devices",
+                        "Top 3 teams will receive prizes",
+                        "Tournament will be streamed live on our YouTube channel"
+                    ],
+                    prizes: [
+                        "1st Place: ₹1,800",
+                        "2nd Place: ₹900",
+                        "3rd Place: ₹300"
+                    ]
+                };
+            } else if (tournamentId === 3) {
+                tournamentData = {
+                    title: "Free Fire Solo Cup",
+                    image: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    date: "Feb 15, 2024",
+                    time: "7:00 PM IST",
+                    prize: "₹2,000",
+                    mode: "Solo",
+                    fee: "₹100 per player",
+                    rules: [
+                        "Single player tournament",
+                        "Players must be at least Gold IV rank",
+                        "Players must use the tournament room code provided 15 minutes before match",
+                        "No emulators allowed, only mobile devices",
+                        "Top 5 players will receive prizes",
+                        "Tournament will be streamed live on our YouTube channel"
+                    ],
+                    prizes: [
+                        "1st Place: ₹1,000",
+                        "2nd Place: ₹500",
+                        "3rd Place: ₹300",
+                        "4th Place: ₹100",
+                        "5th Place: ₹100"
+                    ]
+                };
+            }
+            
+            // Update modal with tournament data
+            modalTitle.textContent = tournamentData.title;
+            
+            let rulesHtml = '';
+            tournamentData.rules.forEach(rule => {
+                rulesHtml += `<li class="flex items-start mb-2"><span class="text-green-400 mr-2"><i class="bi bi-check-circle-fill"></i></span>${rule}</li>`;
+            });
+            
+            let prizesHtml = '';
+            tournamentData.prizes.forEach(prize => {
+                prizesHtml += `<li class="flex items-start mb-2"><span class="text-yellow-400 mr-2"><i class="bi bi-trophy-fill"></i></span>${prize}</li>`;
+            });
+            
+            modalContent.innerHTML = `
+                <img src="${tournamentData.image}" alt="${tournamentData.title}" class="w-full h-48 object-cover rounded mb-4">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="glass p-3 rounded-lg flex items-center">
+                        <i class="bi bi-calendar-event text-2xl mr-3"></i>
+                        <div>
+                            <p class="text-sm text-gray-400">Date</p>
+                            <p class="font-bold">${tournamentData.date}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass p-3 rounded-lg flex items-center">
+                        <i class="bi bi-clock text-2xl mr-3"></i>
+                        <div>
+                            <p class="text-sm text-gray-400">Time</p>
+                            <p class="font-bold">${tournamentData.time}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass p-3 rounded-lg flex items-center">
+                        <i class="bi bi-cash-stack text-2xl mr-3"></i>
+                        <div>
+                            <p class="text-sm text-gray-400">Prize Pool</p>
+                            <p class="font-bold">${tournamentData.prize}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass p-3 rounded-lg flex items-center">
+                        <i class="bi bi-cash text-2xl mr-3"></i>
+                        <div>
+                            <p class="text-sm text-gray-400">Entry Fee</p>
+                            <p class="font-bold">${tournamentData.fee}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass p-4 rounded-lg mb-4">
+                    <h3 class="font-bold text-lg mb-3">Tournament Rules</h3>
+                    <ul class="space-y-1">
+                        ${rulesHtml}
+                    </ul>
+                </div>
+                
+                <div class="glass p-4 rounded-lg">
+                    <h3 class="font-bold text-lg mb-3">Prize Distribution</h3>
+                    <ul class="space-y-1">
+                        ${prizesHtml}
+                    </ul>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+
+        function hideTournamentDetails() {
+            document.getElementById('tournamentDetailsModal').classList.add('hidden');
+        }
+
+        // Team Registration
+        let playerCount = 1;
+
+        function addPlayer() {
+            playerCount++;
+            const playerHtml = `
+                <div class="player-entry glass p-4 rounded">
+                    <label class="block mb-2 font-bold">Player ${playerCount}</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" placeholder="Name" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                        <input type="text" placeholder="Free Fire UID" required class="w-full p-3 rounded bg-gray-800 border border-gray-700">
+                    </div>
+                </div>
+            `;
+            document.getElementById('playersContainer').insertAdjacentHTML('beforeend', playerHtml);
+        }
+
+        // Copy UPI ID
+        function copyUpiId() {
+            navigator.clipboard.writeText('tlggamers@axl').then(() => {
+                alert('UPI ID copied to clipboard!');
+            });
+        }
+
+        // File Upload Preview
+        document.getElementById('paymentScreenshot').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file selected';
+            document.getElementById('fileName').textContent = fileName;
+            document.getElementById('filePreview').classList.remove('hidden');
+        });
+
+        function removeFile() {
+            document.getElementById('paymentScreenshot').value = '';
+            document.getElementById('filePreview').classList.add('hidden');
+        }
+
+        // Form Submissions
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Show loader or processing message here
+            
+            setTimeout(() => {
+                showSuccessModal("Registration Successful!", "Your team registration has been submitted and is pending approval. You will receive confirmation soon.");
+            }, 1500);
+        });
+
+        document.getElementById('chatForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = this.querySelector('input');
+            const message = input.value.trim();
+            if (message) {
+                // In a real app, you would send this to your backend
+                // For demo purposes, we'll just add it to the chat UI
+                const chatMessages = document.getElementById('chatMessages');
+                const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                const messageHtml = `
+                    <div class="flex items-start justify-end space-x-2">
+                        <div class="message-bubble glass p-3 rounded-lg bg-blue-900 bg-opacity-30">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-blue-400">You</span>
+                                <span class="text-xs text-gray-400">${timestamp}</span>
+                            </div>
+                            <p>${message}</p>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                            <span class="font-bold text-xs">YOU</span>
+                        </div>
+                    </div>
+                `;
+                
+                chatMessages.insertAdjacentHTML('beforeend', messageHtml);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                input.value = '';
+            }
+        });
+
+        document.getElementById('complaintForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Show loader or processing message here
+            
+            setTimeout(() => {
+                showSuccessModal("Complaint Submitted", "Your complaint has been submitted successfully. Our team will review it and get back to you soon.");
+            }, 1500);
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (username === 'TLGGAMING' && password === '9880117035') {
+                hideLoginModal();
+                showSection('adminDashboard');
+                showAdminTab('manageTournaments');
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        });
+
+        // Admin Dashboard Functions
+        function logout() {
+            showSection('tournaments');
+            showSuccessModal("Logged Out", "You have been successfully logged out of the admin panel.");
+        }
+        
+        function showAdminTab(tabId) {
+            // Hide all content
+            document.querySelectorAll('.admin-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show selected content
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // Update tab styling
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('neon-border');
+            });
+            document.getElementById(tabId + 'Tab').classList.add('neon-border');
+        }
+        
+        // Tournament Management
+        function showTournamentForm() {
+            document.getElementById('tournamentForm').classList.remove('hidden');
+            document.getElementById('tournamentId').value = '';
+            document.getElementById('tournamentTitle').value = '';
+            document.getElementById('tournamentDate').value = '';
+            document.getElementById('tournamentTime').value = '';
+            document.getElementById('tournamentPrize').value = '';
+            document.getElementById('tournamentFee').value = '';
+            document.getElementById('tournamentRules').value = '';
+        }
+        
+        function hideTournamentForm() {
+            document.getElementById('tournamentForm').classList.add('hidden');
+        }
+        
+        function editTournament(id) {
+            // Populate form with tournament data based on ID
+            document.getElementById('tournamentId').value = id;
+            
+            let tournamentData = {};
+            
+            if (id === 1) {
+                tournamentData = {
+                    title: "Free Fire Squad Championship",
+                    date: "2024-01-25",
+                    time: "20:00",
+                    prize: "5000",
+                    fee: "400",
+                    mode: "Squad",
+                    rules: "Teams must have exactly 4 players\nAll players must be at least Bronze III rank\nPlayers must use the tournament room code provided 15 minutes before match\nNo emulators allowed, only mobile devices\nTop 3 teams will receive prizes\nTournament will be streamed live on our YouTube channel"
+                };
+            } else if (id === 2) {
+                tournamentData = {
+                    title: "Free Fire Duo Challenge",
+                    date: "2024-02-05",
+                    time: "21:00",
+                    prize: "3000",
+                    fee: "200",
+                    mode: "Duo",
+                    rules: "Teams must have exactly 2 players\nAll players must be at least Silver II rank\nPlayers must use the tournament room code provided 15 minutes before match\nNo emulators allowed, only mobile devices\nTop 3 teams will receive prizes\nTournament will be streamed live on our YouTube channel"
+                };
+            } else if (id === 3) {
+                tournamentData = {
+                    title: "Free Fire Solo Cup",
+                    date: "2024-02-15",
+                    time: "19:00",
+                    prize: "2000",
+                    fee: "100",
+                    mode: "Solo",
+                    rules: "Single player tournament\nPlayers must be at least Gold IV rank\nPlayers must use the tournament room code provided 15 minutes before match\nNo emulators allowed, only mobile devices\nTop 5 players will receive prizes\nTournament will be streamed live on our YouTube channel"
+                };
+            }
+            
+            document.getElementById('tournamentTitle').value = tournamentData.title;
+            document.getElementById('tournamentDate').value = tournamentData.date;
+            document.getElementById('tournamentTime').value = tournamentData.time;
+            document.getElementById('tournamentPrize').value = tournamentData.prize;
+            document.getElementById('tournamentFee').value = tournamentData.fee;
+            document.getElementById('tournamentMode').value = tournamentData.mode;
+            document.getElementById('tournamentRules').value = tournamentData.rules;
+            
+            document.getElementById('tournamentForm').classList.remove('hidden');
+        }
+        
+        function deleteTournament(id) {
+            showDeleteConfirmModal(id, 'tournament');
+        }
+        
+        // Registration Management
+        function viewTeamDetails(teamId) {
+            let teamData = {};
+            
+            if (teamId === 1) {
+                teamData = {
+                    name: "Phoenix Squad",
+                    tournament: "Free Fire Squad Championship",
+                    captain: "Aryan Singh",
+                    phone: "+91 9876543210",
+                    status: "Pending",
+                    registeredOn: "Jan 20, 2024",
+                    players: [
+                        { name: "Aryan Singh", uid: "627482918" },
+                        { name: "Vikram Patel", uid: "918273645" },
+                        { name: "Rajat Kumar", uid: "367456219" },
+                        { name: "Deepak Sharma", uid: "142536789" }
+                    ]
+                };
+            } else if (teamId === 2) {
+                teamData = {
+                    name: "Inferno Duo",
+                    tournament: "Free Fire Duo Challenge",
+                    captain: "Rahul Kumar",
+                    phone: "+91 9876123450",
+                    status: "Approved",
+                    registeredOn: "Jan 22, 2024",
+                    players: [
+                        { name: "Rahul Kumar", uid: "567123489" },
+                        { name: "Mohit Singh", uid: "321654987" }
+                    ]
+                };
+            }
+            
+            const modal = document.getElementById('teamDetailsModal');
+            const modalTitle = document.getElementById('modalTeamTitle');
+            const modalContent = document.getElementById('modalTeamContent');
+            
+            modalTitle.textContent = teamData.name;
+            
+            let playersHtml = '';
+            teamData.players.forEach((player, index) => {
+                playersHtml += `
+                    <div class="glass p-3 rounded-lg flex items-center justify-between">
+                        <div>
+                            <div class="font-bold">${index === 0 ? 'Captain: ' : 'Player: '}${player.name}</div>
+                            <div class="text-sm">UID: ${player.uid}</div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                            <span class="font-bold text-xs">${index + 1}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            let statusClass = teamData.status === 'Approved' ? 'text-green-400' : 'text-yellow-400';
+            
+            modalContent.innerHTML = `
+                <div class="glass p-4 rounded-lg mb-4">
+                    <h3 class="font-bold text-lg mb-3">Team Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <p><span class="text-gray-400">Tournament:</span> ${teamData.tournament}</p>
+                        <p><span class="text-gray-400">Status:</span> <span class="${statusClass}">${teamData.status}</span></p>
+                        <p><span class="text-gray-400">Captain:</span> ${teamData.captain}</p>
+                        <p><span class="text-gray-400">Phone:</span> ${teamData.phone}</p>
+                        <p><span class="text-gray-400">Registered:</span> ${teamData.registeredOn}</p>
+                        <p><span class="text-gray-400">Players:</span> ${teamData.players.length}</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-3">Players</h3>
+                    <div class="space-y-3">
+                        ${playersHtml}
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function hideTeamDetailsModal() {
+            document.getElementById('teamDetailsModal').classList.add('hidden');
+        }
+        
+        function approveTeam(teamId) {
+            showSuccessModal("Team Approved", "The team registration has been approved. The team captain will be notified.");
+        }
+        
+        function rejectTeam(teamId) {
+            showSuccessModal("Team Rejected", "The team registration has been rejected. The team captain will be notified.");
+        }
+        
+        // Payment Management
+        function viewPayment(paymentId) {
+            viewPaymentScreenshot(paymentId);
+        }
+        
+        function viewPaymentScreenshot(paymentId) {
+            let paymentData = {};
+            
+            if (paymentId === 1) {
+                paymentData = {
+                    team: "Phoenix Squad",
+                    tournament: "Squad Championship",
+                    amount: "₹400",
+                    date: "Jan 20, 2024",
+                    image: "https://images.unsplash.com/photo-1564349683136-77e08dba1ef3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
+                };
+            } else if (paymentId === 2) {
+                paymentData = {
+                    team: "Inferno Duo",
+                    tournament: "Duo Challenge",
+                    amount: "₹200",
+                    date: "Jan 22, 2024",
+                    image: "https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                };
+            }
+            
+            document.getElementById('paymentTeamName').textContent = paymentData.team;
+            document.getElementById('paymentTournamentName').textContent = paymentData.tournament;
+            document.getElementById('paymentAmount').textContent = paymentData.amount;
+            document.getElementById('paymentDate').textContent = paymentData.date;
+            document.getElementById('paymentScreenshotImage').src = paymentData.image;
+            
+            document.getElementById('paymentScreenshotModal').classList.remove('hidden');
+        }
+        
+        function hidePaymentScreenshotModal() {
+            document.getElementById('paymentScreenshotModal').classList.add('hidden');
+        }
+        
+        function verifyPayment(paymentId) {
+            showSuccessModal("Payment Verified", "The payment has been verified and the team registration is now approved.");
+        }
+        
+        function rejectPayment(paymentId) {
+            showSuccessModal("Payment Rejected", "The payment has been rejected. The team captain will be notified to submit a new payment.");
+        }
+        
+        // Complaint Management
+        function viewComplaint(complaintId) {
+            let complaintData = {};
+            
+            if (complaintId === 1) {
+                complaintData = {
+                    user: "Aryan Singh",
+                    email: "aryan.singh@example.com",
+                    type: "Payment Issues",
+                    subject: "Payment made but not verified",
+                    date: "Jan 21, 2024",
+                    status: "Open",
+                    details: "I have made the payment for the Squad Championship tournament on Jan 20th but my payment is still showing as pending. I have uploaded the screenshot. Please verify it as soon as possible as the tournament is in 4 days."
+                };
+            } else if (complaintId === 2) {
+                complaintData = {
+                    user: "Rahul Kumar",
+                    email: "rahul.kumar@example.com",
+                    type: "Report Cheating",
+                    subject: "Suspected hacker in tournament",
+                    date: "Jan 23, 2024",
+                    status: "In Progress",
+                    details: "During the Duo Challenge practice match, a player with ID 'FastShooter456' was using what appears to be an aimbot. They were getting headshots from impossible angles and through walls. I have recorded the gameplay as evidence. Please review and take action."
+                };
+            }
+            
+            let statusClass = '';
+            if (complaintData.status === 'Open') statusClass = 'text-red-400';
+            else if (complaintData.status === 'In Progress') statusClass = 'text-purple-400';
+            else if (complaintData.status === 'Resolved') statusClass = 'text-green-400';
+            
+            document.getElementById('complaintContent').innerHTML = `
+                <div class="glass p-4 rounded-lg mb-4">
+                    <div class="flex justify-between mb-2">
+                        <h3 class="font-bold">${complaintData.subject}</h3>
+                        <span class="${statusClass}">${complaintData.status}</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mb-4">
+                        <p><span class="text-gray-400">From:</span> ${complaintData.user} (${complaintData.email})</p>
+                        <p><span class="text-gray-400">Date:</span> ${complaintData.date}</p>
+                        <p><span class="text-gray-400">Type:</span> ${complaintData.type}</p>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h4 class="font-bold mb-2">Complaint Details:</h4>
+                        <div class="glass p-3 rounded-lg bg-opacity-20">
+                            <p>${complaintData.details}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('complaintModal').classList.remove('hidden');
+        }
+        
+        function hideComplaintModal() {
+            document.getElementById('complaintModal').classList.add('hidden');
+        }
+        
+        function resolveComplaint(complaintId) {
+            changeComplaintStatus('resolved');
+            showSuccessModal("Complaint Resolved", "The complaint has been marked as resolved and the user has been notified.");
+        }
+        
+        function changeComplaintStatus(status) {
+            // In a real app, you would update the status in your backend
+            showSuccessModal("Status Updated", `The complaint status has been updated to "${status.charAt(0).toUpperCase() + status.slice(1)}".`);
+        }
+        
+        // Admin Tournament Form
+        document.getElementById('addTournamentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const tournamentId = document.getElementById('tournamentId').value;
+            const isEditing = tournamentId !== '';
+            
+            // Show success message
+            if (isEditing) {
+                showSuccessModal("Tournament Updated", "The tournament details have been successfully updated.");
+            } else {
+                showSuccessModal("Tournament Created", "The new tournament has been successfully created.");
+            }
+            
+            hideTournamentForm();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('tournaments');
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
